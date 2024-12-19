@@ -14,19 +14,15 @@ driver.get(website)
 
 time.sleep(5)
 
+# Retrieve the number of followers
+no_of_followers = driver.find_element(By.CSS_SELECTOR, 'strong[data-e2e="followers-count"]')
+followers_count = no_of_followers.text
+print("Followers:",followers_count)
+
+# Retrieve the number the total number of likes
 likes_element = driver.find_element(By.CSS_SELECTOR, 'strong[data-e2e="likes-count"]')
-
-# Extract the text content
 likes_count = likes_element.text
-
 print("Likes count:", likes_count)
 
-# This clicks the cookie button of the website automatically. It finds the element of the button. 
-# cookie_button = driver.find_element(By.CLASS_NAME, '_a9-- _ap36 _a9_1')
-# cookie_button.click()
-
-
-
-
-# driver.quit()
+driver.quit()
 
