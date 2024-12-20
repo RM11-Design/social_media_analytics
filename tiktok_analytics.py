@@ -44,5 +44,13 @@ views = driver.find_elements(By.CSS_SELECTOR, 'strong[data-e2e="video-views"]')
 for x, view in enumerate(views, start=1):
     print(f"Video {x} Views:", view.text)
 
+# Save the results to a csv file.
+
+with open("Bsoc tiktok.csv","w",newline="",encoding="utf-8") as f:
+    write = csv.writer(f)
+
+    write.writerow(["ACCOUNT","FOLLOWERS","TOTAL LIKES"])
+    write.writerow([the_title,followers_count,likes_count])
+
 driver.quit()
 
