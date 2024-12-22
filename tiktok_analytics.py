@@ -1,5 +1,6 @@
 import time
 import csv
+from openpyxl import Workbook
 from selenium import webdriver 
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.common.by import By
@@ -46,16 +47,34 @@ views = driver.find_elements(By.CSS_SELECTOR, 'strong[data-e2e="video-views"]')
 for x, view in enumerate(views, start=1):
     print(f"Video {x} Views:", view.text)
 
-# Save the results to a csv file.
+# Save the results to a excel file.
 
-with open("Bsoc tiktok.csv","w",newline="",encoding="utf-8") as f:
-    write = csv.writer(f)
+workbook = Workbook()
+sheet = workbook.active
 
-    write.writerow(["ACCOUNT","FOLLOWERS","TOTAL-LIKES","VIDEO","VIEWS"])
-    write.writerow([the_title,followers_count,likes_count,"Video",x,view.text])
+sheet["A1"] = "Account Name"
+sheet["A2"] = "Followers"
+sheet["A3"] = "Likes"
 
-    # write.writerow(["Video","Views"])
-    # write.writerow([view.text])
+sheet["B1"] = title.text
+sheet["B2"] = followers_count
+sheet["B3"] = likes_count
+
+
+
+workbook.save(filename="bsoc_tiktok.xlsx")
+
+    
+
+
+# with open("Bsoc tiktok.csv","w",newline="",encoding="utf-8") as f:
+#     write = csv.writer(f)
+
+#     write.writerow(["ACCOUNT","FOLLOWERS","TOTAL-LIKES","VIDEO","VIEWS"])
+#     write.writerow([the_title,followers_count,likes_count,"Video",x,view.text])
+
+#     write.writerow(["Video","Views"])
+#     write.writerow([view.text])
 
 driver.quit()
 
