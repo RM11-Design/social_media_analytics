@@ -1,5 +1,7 @@
 import time
 import csv
+import matplotlib.pyplot as plt
+import numpy as np
 from openpyxl import Workbook
 from selenium import webdriver 
 from selenium.webdriver.firefox.service import Service
@@ -10,6 +12,7 @@ service = Service("C:\\Users\\tmrom\\OneDrive\\Desktop\\Python\\geckodriver.exe"
 
 # Create the webdriver object using the service
 driver = webdriver.Firefox(service=service)
+
 
 # Navigate to the website
 website = input("Enter the URL of TikTok account: ")
@@ -47,22 +50,56 @@ views = driver.find_elements(By.CSS_SELECTOR, 'strong[data-e2e="video-views"]')
 for x, view in enumerate(views, start=1):
     print(f"Video {x} Views:", view.text)
 
+time.sleep(3)
+
+# Find the video with the most of views
+
+max_views = 0
+max_video = 0
+
+for x, view in enumerate(views, start=1):
+    views_count = int(view.text)
+    if views_count > max_views:
+        max_views = views_count
+        max_video = x
+
+print(f"Video {max_video} has the most views with {max_views} views")
+
+
+# Draw a graph based on the views
+
+# for x, view in enumerate(views, start=1):
+
+#     video = np.array(x)
+#     views = np.array([view.text])
+
+# plt.bar(video,views)
+# plt.show()
+
+
 # Save the results to a excel file.
 
-workbook = Workbook()
-sheet = workbook.active
+# workbook = Workbook()
+# sheet = workbook.active
 
-sheet["A1"] = "Account Name"
-sheet["A2"] = "Followers"
-sheet["A3"] = "Likes"
+# sheet["A1"] = "Account Name"
+# sheet["A2"] = "Followers"
+# sheet["A3"] = "Likes"
 
-sheet["B1"] = title.text
-sheet["B2"] = followers_count
-sheet["B3"] = likes_count
+# sheet["B1"] = title.text
+# sheet["B2"] = followers_count
+# sheet["B3"] = likes_count
+
+# # # Videos
+
+# # sheet["A5"] = "Video"
+# # sheet["A6"] = "Number of views"
+
+# # for x, view in enumerate(views, start=1):
+# #     sheet.append([f"Video {x}", view])
 
 
-
-workbook.save(filename="bsoc_tiktok.xlsx")
+# workbook.save(filename=f"{title.text}.xlsx")
 
     
 
