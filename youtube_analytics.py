@@ -1,4 +1,5 @@
 import time
+import csv
 from selenium import webdriver 
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.common.by import By
@@ -45,5 +46,16 @@ views = driver.find_elements(By.XPATH, '//*[@id="metadata-line"]/span[1]')
 # Without it, the loop wouldn't know how many items to iterate.
 for i in range(len(video_titles)):
     print(f"Video: {video_titles[i].text} | Views: {views[i].text}")
+
+time.sleep(4)
+
+# Save results to a csv file
+
+with open(f"{name.text}.csv","w",newline="",encoding="utf-8") as f:
+    write = csv.writer(f)
+
+    write.writerow(["VIDEO","VIEWS"])
+    for i in range(len(video_titles)):
+        write.writerow([video_titles[i].text,views[i].text])
 
 driver.quit()
