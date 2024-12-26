@@ -1,5 +1,6 @@
 import time
 import csv
+import matplotlib.pyplot as plt 
 from selenium import webdriver 
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.common.by import By
@@ -35,7 +36,7 @@ videos_button.click()
 time.sleep(4)
 
 video_titles = driver.find_elements(By.XPATH, '//*[@id="video-title"]')
-print(video_titles[0].text)
+# print(video_titles[0].text)
 
 views = driver.find_elements(By.XPATH, '//*[@id="metadata-line"]/span[1]')
 
@@ -44,6 +45,11 @@ views = driver.find_elements(By.XPATH, '//*[@id="metadata-line"]/span[1]')
 
 # Len has been added to determine the number of videos. 
 # Without it, the loop wouldn't know how many items to iterate.
+# for i in range(len(video_titles)):
+#     print(f"Video: {video_titles[i].text} | Views: {views[i].text}")
+
+time.sleep(4)
+
 for i in range(len(video_titles)):
     print(f"Video: {video_titles[i].text} | Views: {views[i].text}")
 
@@ -54,8 +60,31 @@ time.sleep(4)
 with open(f"{name.text}.csv","w",newline="",encoding="utf-8") as f:
     write = csv.writer(f)
 
-    write.writerow(["VIDEO","VIEWS"])
+    write.writerow(["VIDEO_NUMBER","VIDEO","VIEWS"])
+
     for i in range(len(video_titles)):
-        write.writerow([video_titles[i].text,views[i].text])
+        write.writerow([i + 1,video_titles[i].text,views[i].text])
+    
+    # for num in enumerate(video_titles):
+    #      write.writerow(num)
+
+# Plot graph based on the results
+
+x = [] 
+y = [] 
+            
+with open(f'{name.text}.csv','r',encoding="utf-8") as csvfile: 
+    plots = csv.reader(csvfile, delimiter = ',') 
+                
+    for row in plots: 
+            x.append(row[0]) 
+            y.append(row[2]) 
+            
+plt.bar(x, y, color = 'g', width = 0.72, label = "Views") 
+plt.xlabel('Video') 
+plt.ylabel('Views') 
+plt.title('Views for each video comparsion') 
+plt.legend() 
+plt.show() 
 
 driver.quit()

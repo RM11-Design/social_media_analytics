@@ -47,8 +47,14 @@ views = driver.find_elements(By.CSS_SELECTOR, 'strong[data-e2e="video-views"]')
 # Retrieve the number of views for each video
 # Each video is assigned a number.
 
-for x, view in enumerate(views, start=1):
-    print(f"Video {x} Views:", view.text)
+enumerate_videos = tuple(enumerate(views))
+reversed_videos = reversed(enumerate_videos)
+
+for x, view in reversed_videos:
+    print(f"Video {x} Views:", reversed_videos)
+
+# for x, view in enumerate(views, start=1):
+#     print(f"Video {x} Views:", view.text)
 
 time.sleep(3)
 

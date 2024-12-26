@@ -1,40 +1,31 @@
 import time
 import csv
-from selenium import webdriver 
-from selenium.webdriver.firefox.service import Service
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
+import matplotlib.pyplot as plt       
 
-service = Service("C:\\Users\\tmrom\\OneDrive\\Desktop\\Python\\geckodriver.exe")
+# with open('Foysal Mahmud Vlogs.csv','r',encoding="utf-8") as csvfile:
+#     for x in enumerate(start=1):
+#         print(f"Video {x} Views:")
 
-# Create the webdriver object using the service
-driver = webdriver.Firefox(service=service)
 
-# Navigate to the website
-website = "https://www.instagram.com/uccbangladeshsociety/"
-driver.get(website)
+# x = [] 
+# y = [] 
+            
+# with open(f'Foysal Mahmud Vlogs.csv','r',encoding="utf-8") as csvfile: 
+#     plots = csv.reader(csvfile, delimiter = ',') 
+                
+#     for row in plots: 
+#             x.append(row[0]) 
+#             y.append(row[1]) 
+            
+# plt.bar(x, y, color = 'g', width = 0.72, label = "Views") 
+# plt.xlabel('Video') 
+# plt.ylabel('Views') 
+# plt.title('Views for each video comparsion') 
+# plt.legend() 
+# plt.show() 
 
-# time.sleep(6)
+l1 = ["eat", "sleep", "repeat"]
 
-# # Retrieve the account name.
-# title = driver.find_element(By.XPATH, '//*[@id="main-content-others_homepage"]/div/div[1]/div[2]/div[1]/div/h2')
-# the_title = title.text
-# print("Account Name:",title.text)
-
-# # Retrieve the number of followers
-# no_of_followers = driver.find_element(By.CSS_SELECTOR, 'strong[data-e2e="followers-count"]')
-# followers_count = no_of_followers.text
-# print("Number of followers:",followers_count)
-
-# # Retrieve the number the total number of likes
-# likes_element = driver.find_element(By.CSS_SELECTOR, 'strong[data-e2e="likes-count"]')
-# likes_count = likes_element.text
-# print("Number of likes",likes_count)
-
-# with open("Bsoc tiktok.csv","w",newline="",encoding="utf-8") as f:
-#     write = csv.writer(f)
-
-#     write.writerow(["ACCOUNT","FOLLOWERS","TOTAL-LIKES"])
-#     write.writerow([the_title,followers_count,likes_count])
-
-driver.quit()
+# printing the tuples in object directly
+for ele in enumerate(l1):
+    print (ele)
