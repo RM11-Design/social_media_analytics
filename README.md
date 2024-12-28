@@ -1,1 +1,1 @@
-While working as PRO for UCC Bangladesh Society, I was in charge of handling their social media. I noticed that some Tiktok videos were getting more views than others, but I didn't understand why. Because of this problem, I created a python script where it gets the data of the videos and analyzes it. From there we can compare which video got the most views and draw assumptions based on this.
+
