@@ -16,7 +16,8 @@ driver = webdriver.Firefox(service=service)
 
 # Navigate to the website
 website = input("Enter the URL of TikTok account: ")
-# website = "https://www.tiktok.com/@uccbangladeshsociety"
+time.sleep(6)
+
 driver.get(website)
 print("Processing...")
 
@@ -47,11 +48,11 @@ views = driver.find_elements(By.CSS_SELECTOR, 'strong[data-e2e="video-views"]')
 # Retrieve the number of views for each video
 # Each video is assigned a number.
 
-enumerate_videos = tuple(enumerate(views))
-reversed_videos = reversed(enumerate_videos)
+# enumerate_videos = tuple(enumerate(views))
+# reversed_videos = reversed(enumerate_videos)
 
-for x, view in reversed_videos:
-    print(f"Video {x} Views:", reversed_videos)
+# for x, view in reversed_videos:
+#     print(f"Video {x} Views:", reversed_videos)
 
 # for x, view in enumerate(views, start=1):
 #     print(f"Video {x} Views:", view.text)
@@ -71,53 +72,36 @@ for x, view in enumerate(views, start=1):
 
 print(f"Video {max_video} has the most views with {max_views} views")
 
+# time.sleep(4)
 
-# Draw a graph based on the views
-
-# for x, view in enumerate(views, start=1):
-
-#     video = np.array(x)
-#     views = np.array([view.text])
-
-# plt.bar(video,views)
-# plt.show()
-
-
-# Save the results to a excel file.
-
-# workbook = Workbook()
-# sheet = workbook.active
-
-# sheet["A1"] = "Account Name"
-# sheet["A2"] = "Followers"
-# sheet["A3"] = "Likes"
-
-# sheet["B1"] = title.text
-# sheet["B2"] = followers_count
-# sheet["B3"] = likes_count
-
-# # # Videos
-
-# # sheet["A5"] = "Video"
-# # sheet["A6"] = "Number of views"
-
-# # for x, view in enumerate(views, start=1):
-# #     sheet.append([f"Video {x}", view])
-
-
-# workbook.save(filename=f"{title.text}.xlsx")
-
-    
-
-
-# with open("Bsoc tiktok.csv","w",newline="",encoding="utf-8") as f:
+# with open(f"{title.text}.csv","w",newline="",encoding="utf-8") as f:
 #     write = csv.writer(f)
+#     write.writerow(["VIDEO_NUMBER","VIDEO","VIEWS"])
 
-#     write.writerow(["ACCOUNT","FOLLOWERS","TOTAL-LIKES","VIDEO","VIEWS"])
-#     write.writerow([the_title,followers_count,likes_count,"Video",x,view.text])
+#     for i in enumerate():
+#         write.writerow([i + 1,video_titles[i].text,views[i].text])
 
-#     write.writerow(["Video","Views"])
-#     write.writerow([view.text])
+
+# # Plot graph based on the results
+
+# x = [] 
+# y = [] 
+
+# with open(f'{title.text}.csv','r',encoding="utf-8") as csvfile: 
+#     plots = csv.reader(csvfile, delimiter = ',')
+#     next(plots) 
+                
+#     for row in plots: 
+#         x.append(row[0])
+#         y.append(int(row[2]))
+
+# plt.bar(x, y, color = 'g', width = 0.72, label = "Views") 
+# plt.xlabel('Video Number') 
+# plt.ylabel('Views') 
+# plt.title('Views for each video comparsion') 
+# plt.legend() 
+# plt.show() 
+           
 
 driver.quit()
 
