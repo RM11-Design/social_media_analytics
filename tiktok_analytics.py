@@ -1,12 +1,9 @@
 import time
 import csv
 import matplotlib.pyplot as plt
-import numpy as np
-from openpyxl import Workbook
 from selenium import webdriver 
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 service = Service("C:\\Users\\tmrom\\OneDrive\\Desktop\\Python\\geckodriver.exe")
 
@@ -48,16 +45,57 @@ views = driver.find_elements(By.CSS_SELECTOR, 'strong[data-e2e="video-views"]')
 # Retrieve the number of views for each video
 # Each video is assigned a number.
 
-# enumerate_videos = tuple(enumerate(views))
-# reversed_videos = reversed(enumerate_videos)
+for x, view in enumerate(views, start=1):
+    print(f"Video {x} Views:", view.text)
 
-# for x, view in reversed_videos:
-#     print(f"Video {x} Views:", reversed_videos)
 
-# for x, view in enumerate(views, start=1):
-#     print(f"Video {x} Views:", view.text)
+time.sleep(4)
 
-time.sleep(3)
+with open(f"{title.text}.csv","w",newline="",encoding="utf-8") as f:
+    write = csv.writer(f)
+    write.writerow(["VIDEO_NUMBER","VIEWS"])
+
+    for i, view in enumerate(views, start=1):
+        write.writerow([f"Video {i} Views:",view.text])
+
+f.close()
+
+# Plot graph based on the results
+
+x = [] 
+y = [] 
+
+with open(f'{title.text}.csv','r',encoding="utf-8") as csvfile: 
+    
+    plots = csv.reader(csvfile, delimiter = ',')
+    next(plots) 
+                
+    for row in plots: 
+        x.append(row[0])
+        y.append(int(row[1]))
+
+plt.bar(x, y, color = 'g', width = 0.72, label = "Views") 
+plt.xlabel('Video Number') 
+plt.ylabel('Views') 
+plt.title('Views for each video comparsion') 
+plt.legend() 
+plt.show() 
+
+csvfile.close()
+
+# Get the average number of views
+
+with open(f'{title.text}.csv','r',encoding="utf-8") as csvfile: 
+    read_part = csv.reader(csvfile) 
+    next(read_part, None)   
+
+    values = []
+
+    for row in read_part:
+         value = float(row[1].replace(",",""))
+         values.append(value)
+         avg = sum(values) / len(values)
+    print(f"Average views: {avg:.0f}")
 
 # Find the video with the most of views
 
@@ -71,36 +109,6 @@ for x, view in enumerate(views, start=1):
         max_video = x
 
 print(f"Video {max_video} has the most views with {max_views} views")
-
-# time.sleep(4)
-
-# with open(f"{title.text}.csv","w",newline="",encoding="utf-8") as f:
-#     write = csv.writer(f)
-#     write.writerow(["VIDEO_NUMBER","VIDEO","VIEWS"])
-
-#     for i in enumerate():
-#         write.writerow([i + 1,video_titles[i].text,views[i].text])
-
-
-# # Plot graph based on the results
-
-# x = [] 
-# y = [] 
-
-# with open(f'{title.text}.csv','r',encoding="utf-8") as csvfile: 
-#     plots = csv.reader(csvfile, delimiter = ',')
-#     next(plots) 
-                
-#     for row in plots: 
-#         x.append(row[0])
-#         y.append(int(row[2]))
-
-# plt.bar(x, y, color = 'g', width = 0.72, label = "Views") 
-# plt.xlabel('Video Number') 
-# plt.ylabel('Views') 
-# plt.title('Views for each video comparsion') 
-# plt.legend() 
-# plt.show() 
            
 
 driver.quit()

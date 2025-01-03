@@ -42,15 +42,15 @@ video_titles = driver.find_elements(By.XPATH, '//*[@id="video-title"]')
 
 views = driver.find_elements(By.XPATH, '//*[@id="metadata-line"]/span[1]')
 
-# Len has been added to determine the number of videos. 
-# Without it, the loop wouldn't know how many items to iterate.
-
 time.sleep(4)
 
 # Get video with the highest number of views
 
 max_views = 0
 max_views_title = ""
+
+# Len has been added to determine the number of videos. 
+# Without it, the loop wouldn't know how many items to iterate.
 
 for i in range(len(video_titles)):
     # Clean the view count text
@@ -113,5 +113,21 @@ plt.ylabel('Views')
 plt.title('Views for each video comparsion') 
 plt.legend() 
 plt.show() 
+
+csvfile.close()
+
+# Get the average number of views
+
+with open(f'{name.text}.csv','r',encoding="utf-8") as csvfile: 
+    read_part = csv.reader(csvfile) 
+    next(read_part, None)   
+
+    values = []
+
+    for row in read_part:
+         value = float(row[1].replace(",",""))
+         values.append(value)
+         avg = sum(values) / len(values)
+    print(f"Average views: {avg:.0f}")
            
 driver.quit()
