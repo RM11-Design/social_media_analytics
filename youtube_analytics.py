@@ -14,7 +14,7 @@ website = input("Enter the URL of Youtube account: ")
 driver.get(website)
 print("Processing...")
 
-time.sleep(3)
+time.sleep(4)
 
 cookie_button = driver.find_element(By.XPATH, '/html/body/c-wiz/div/div/div/div[2]/div[1]/div[3]/div[1]/form[1]/div/div/button/span')
 cookie_button.click()
@@ -34,6 +34,10 @@ time.sleep(4)
 
 videos_button = driver.find_element(By.XPATH, '//*[@id="tabsContent"]/yt-tab-group-shape/div[1]/yt-tab-shape[2]/div[1]')
 videos_button.click()
+
+time.sleep(4)
+
+driver.execute_script("window.scrollBy(0,4000)")
 
 time.sleep(4)
 
@@ -92,7 +96,8 @@ with open(f"{name.text}.csv","w",newline="",encoding="utf-8") as f:
             view_count = float(view_text.replace("M", "")) * 1000000
         else:
             view_count = int(view_text)  # Handles plain numbers without "K" or "M"
-            write.writerow([i + 1,video_titles[i].text,view_count])
+    
+        write.writerow([i + 1,video_titles[i].text,int(view_count)])
 
 # Plot graph based on the results
 
@@ -107,12 +112,18 @@ with open(f'{name.text}.csv','r',encoding="utf-8") as csvfile:
         x.append(row[0])
         y.append(int(row[2]))
 
-plt.bar(x, y, color = 'g', width = 0.72, label = "Views") 
+plt.bar(x, y, color = 'g', width = 0.55, label = "Views") 
 plt.xlabel('Video Number') 
 plt.ylabel('Views') 
 plt.title('Views for each video comparsion') 
 plt.legend() 
-plt.show() 
+# plt.show() 
+
+plt.savefig(f'{name.text}.png')
+
+plt.savefig(f"{name.text}", facecolor='w', bbox_inches="tight",
+            pad_inches=0.35, transparent=True)
+
 
 csvfile.close()
 
@@ -125,7 +136,7 @@ with open(f'{name.text}.csv','r',encoding="utf-8") as csvfile:
     values = []
 
     for row in read_part:
-         value = float(row[1].replace(",",""))
+         value = float(row[2].replace(",",""))
          values.append(value)
          avg = sum(values) / len(values)
     print(f"Average views: {avg:.0f}")
