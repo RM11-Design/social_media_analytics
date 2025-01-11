@@ -1,4 +1,5 @@
 import time
+import pandas as pd
 import csv
 import matplotlib.pyplot as plt 
 from selenium import webdriver 
@@ -104,28 +105,35 @@ with open(f"{name.text}.csv","w",newline="",encoding="utf-8") as f:
 x = [] 
 y = [] 
 
-with open(f'{name.text}.csv','r',encoding="utf-8") as csvfile: 
-    plots = csv.reader(csvfile, delimiter = ',')
-    next(plots) 
-                
-    for row in plots: 
-        x.append(row[0])
-        y.append(int(row[2]))
+df = pd.read_csv('Ron’s gadget Review.csv')
+top_5 = df.nlargest(5, 'VIEWS')
+# print(top_5)
+
+# Save top 3 to a CSV file
+top_5.to_csv(f"top_5 for {name.text}.csv", index=False)
+
+top_5.drop('VIDEO_NUMBER', inplace=True, axis=1) 
+
+top_5.to_csv(f"top_5 for {name.text}.csv", index=False)
+
+# Assign a value to each video.
+top_5_numbers = ["1","2","3","4","5"]
+top_5['VIDEO_NUMBER'] = top_5_numbers
+top_5.to_csv(f"top_5 for {name.text}.csv", index=False)
+
+# Prepare data for plotting for top 3
+x = top_5["VIDEO_NUMBER"].tolist()  # Assuming 'VIDEO_NUMBER' is a column
+y = top_5["VIEWS"].tolist()
 
 plt.bar(x, y, color = 'g', width = 0.55, label = "Views") 
 plt.xlabel('Video Number') 
 plt.ylabel('Views') 
-plt.title('Views for each video comparsion') 
+plt.title(f'Top 5 Videos for {name.text}') 
 plt.legend() 
 # plt.show() 
 
-plt.savefig(f'{name.text}.png')
-
-plt.savefig(f"{name.text}", facecolor='w', bbox_inches="tight",
+plt.savefig(f'Top 5 videos for {name.text}.png', facecolor='w', bbox_inches="tight",
             pad_inches=0.35, transparent=True)
-
-
-csvfile.close()
 
 # Get the average number of views
 
@@ -140,5 +148,7 @@ with open(f'{name.text}.csv','r',encoding="utf-8") as csvfile:
          values.append(value)
          avg = sum(values) / len(values)
     print(f"Average views: {avg:.0f}")
+
+csvfile.close()
            
 driver.quit()
