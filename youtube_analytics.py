@@ -38,6 +38,7 @@ videos_button.click()
 
 time.sleep(4)
 
+# Automatic scroll
 driver.execute_script("window.scrollBy(0,4000)")
 
 time.sleep(4)
@@ -105,7 +106,7 @@ with open(f"{name.text}.csv","w",newline="",encoding="utf-8") as f:
 x = [] 
 y = [] 
 
-df = pd.read_csv('Ron’s gadget Review.csv')
+df = pd.read_csv(f'{name.text}.csv')
 top_5 = df.nlargest(5, 'VIEWS')
 # print(top_5)
 

@@ -1,5 +1,7 @@
 import time
 import csv
+import os
+import pandas as pd
 import matplotlib.pyplot as plt
 from selenium import webdriver 
 from selenium.webdriver.firefox.service import Service
@@ -28,6 +30,14 @@ title = driver.find_element(By.XPATH, '//*[@id="main-content-others_homepage"]/d
 the_title = title.text
 print("Account Name:",title.text)
 
+# Automatic scroll
+driver.execute_script("window.scrollBy(0,6000)")
+
+time.sleep(3)
+
+# decline_cookie_button = driver.find_element(By.XPATH, '/div/div[2]/button[1]')
+# decline_cookie_button.click()
+
 # Retrieve the number of followers
 no_of_followers = driver.find_element(By.CSS_SELECTOR, 'strong[data-e2e="followers-count"]')
 followers_count = no_of_followers.text
@@ -48,10 +58,19 @@ views = driver.find_elements(By.CSS_SELECTOR, 'strong[data-e2e="video-views"]')
 for x, view in enumerate(views, start=1):
     print(f"Video {x} Views:", view.text)
 
-
 time.sleep(4)
 
-with open(f"{title.text}.csv","w",newline="",encoding="utf-8") as f:
+folder_path = f"C:\\Users\\tmrom\\OneDrive\\Desktop\\Python\\PushingTheBoundaries\\social_media_analytics\\Reports for {title.text}"
+ 
+# create the folder if it doesn't exist 
+if not os.path.exists(folder_path): 
+    os.makedirs(folder_path) 
+ 
+# define the file name and path 
+file_name = f"{title.text}.csv"
+file_path = os.path.join(folder_path, file_name)
+
+with open(file_path,"w",newline="",encoding="utf-8") as f:
     write = csv.writer(f)
     write.writerow(["VIDEO_NUMBER","VIEWS"])
 
@@ -60,32 +79,44 @@ with open(f"{title.text}.csv","w",newline="",encoding="utf-8") as f:
 
 f.close()
 
-# Plot graph based on the results
+# Plot graph based on the the top 5 videos
 
 x = [] 
 y = [] 
 
-with open(f'{title.text}.csv','r',encoding="utf-8") as csvfile: 
-    
-    plots = csv.reader(csvfile, delimiter = ',')
-    next(plots) 
-                
-    for row in plots: 
-        x.append(row[0])
-        y.append(int(row[1]))
+df = pd.read_csv(file_path)
+top_5 = df.nlargest(5, 'VIEWS')
+# print(top_5)
+
+# Save top 3 to a CSV file
+top_5.to_csv(f"C:\\Users\\tmrom\\OneDrive\\Desktop\\Python\\PushingTheBoundaries\\social_media_analytics\\Reports for {title.text}\\top_5 for {title.text}.csv", index=False)
+
+top_5.drop('VIDEO_NUMBER', inplace=True, axis=1) 
+
+top_5.to_csv(f"C:\\Users\\tmrom\\OneDrive\\Desktop\\Python\\PushingTheBoundaries\\social_media_analytics\\Reports for {title.text}\\top_5 for {title.text}.csv", index=False)
+
+# Assign a value to each video.
+top_5_numbers = ["1","2","3","4","5"]
+top_5['VIDEO_NUMBER'] = top_5_numbers
+top_5.to_csv(f"C:\\Users\\tmrom\\OneDrive\\Desktop\\Python\\PushingTheBoundaries\\social_media_analytics\\Reports for {title.text}\\top_5 for {title.text}.csv", index=False)
+
+# Prepare data for plotting for top 5
+x = top_5["VIDEO_NUMBER"].tolist()  # Assuming 'VIDEO_NUMBER' is a column
+y = top_5["VIEWS"].tolist()
 
 plt.bar(x, y, color = 'g', width = 0.72, label = "Views") 
 plt.xlabel('Video Number') 
 plt.ylabel('Views') 
-plt.title('Views for each video comparsion') 
+plt.title(f'Top 5 videos for {title.text}') 
 plt.legend() 
-plt.show() 
+plt.savefig(f'C:\\Users\\tmrom\\OneDrive\\Desktop\\Python\\PushingTheBoundaries\\social_media_analytics\\Reports for {title.text}\\Top 5 videos for {title.text}.png', facecolor='w', bbox_inches="tight",
+            pad_inches=0.2, transparent=True)
 
-csvfile.close()
+time.sleep(4)
 
 # Get the average number of views
 
-with open(f'{title.text}.csv','r',encoding="utf-8") as csvfile: 
+with open(f'C:\\Users\\tmrom\\OneDrive\\Desktop\\Python\\PushingTheBoundaries\\social_media_analytics\\Reports for {title.text}\\{title.text}.csv','r',encoding="utf-8") as csvfile: 
     read_part = csv.reader(csvfile) 
     next(read_part, None)   
 
@@ -110,6 +141,5 @@ for x, view in enumerate(views, start=1):
 
 print(f"Video {max_video} has the most views with {max_views} views")
            
-
 driver.quit()
 
