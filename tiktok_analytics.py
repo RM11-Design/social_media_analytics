@@ -55,8 +55,15 @@ views = driver.find_elements(By.CSS_SELECTOR, 'strong[data-e2e="video-views"]')
 # Retrieve the number of views for each video
 # Each video is assigned a number.
 
-for x, view in enumerate(views, start=1):
-    print(f"Video {x} Views:", view.text)
+for x, view_element in enumerate(views):
+    view_text = view_element.text
+    if "K" in view_text:
+        view_count = float(view_text.replace("K", "")) * 1000
+    elif "M" in view_text:
+        view_count = float(view_text.replace("M", "")) * 1000000
+    else:
+        view_count = int(view_text)  # Handles plain numbers without "K" or "M"
+    print(f"Video {x + 1} Views:", view_count)
 
 time.sleep(4)
 
@@ -74,8 +81,16 @@ with open(file_path,"w",newline="",encoding="utf-8") as f:
     write = csv.writer(f)
     write.writerow(["VIDEO_NUMBER","VIEWS"])
 
-    for i, view in enumerate(views, start=1):
-        write.writerow([f"Video {i} Views:",view.text])
+    for x, view_element in enumerate(views):
+        view_text = view_element.text
+        if "K" in view_text:
+            view_count = float(view_text.replace("K", "")) * 1000
+        elif "M" in view_text:
+            view_count = float(view_text.replace("M", "")) * 1000000
+        else:
+            view_count = int(view_text)  # Handles plain numbers without "K" or "M"
+        
+        write.writerow([f"Video {x + 1} Views:", view_count])
 
 f.close()
 
