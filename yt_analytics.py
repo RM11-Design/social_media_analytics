@@ -2,7 +2,7 @@ from playwright.sync_api import sync_playwright
 import time
 
 with sync_playwright() as p:
-    browser = p.chromium.launch(headless=False)
+    browser = p.chromium.launch(headless=True)
     the_video = browser.new_page()
     chosen_video = input("Throw in URL of video: ")
     the_video.goto(chosen_video)
@@ -13,15 +13,14 @@ with sync_playwright() as p:
 
     time.sleep(3)
 
-    for _ in range(5):  # Scroll 10 times
+    for i in range(10): 
         the_video.evaluate("window.scrollBy(0, 600)")  
-
 
     time.sleep(3)
 
     comments = the_video.locator('xpath=//*[@id="content-text"]/span').all_text_contents()
-    # //*[@id="content-text"]/span
-    for comment in comments:
+
+    for comment in enumerate(comments):
         print(comment)
     
 
