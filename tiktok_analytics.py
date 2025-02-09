@@ -18,6 +18,7 @@ website = input("Enter the URL of TikTok account: ")
 time.sleep(6)
 
 driver.get(website)
+driver.minimize_window()
 print("Processing...")
 
 time.sleep(6)
@@ -51,6 +52,14 @@ print("Number of likes",likes_count)
 time.sleep(3)
 
 views = driver.find_elements(By.CSS_SELECTOR, 'strong[data-e2e="video-views"]')
+
+time.sleep(4)
+
+# Clicks on a video
+# click_video = driver.find_element(By.CSS_SELECTOR, "div[data-e2e='user-post-item']")
+# click_video.click()
+
+
 
 # Retrieve the number of views for each video
 # Each video is assigned a number.
