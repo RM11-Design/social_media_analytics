@@ -6,8 +6,9 @@ import matplotlib.pyplot as plt
 from selenium import webdriver 
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.common.by import By
+import creds
 
-service = Service("C:\\Users\\tmrom\\OneDrive\\Desktop\\Python\\geckodriver.exe")
+service = Service(creds.driver_file_path)
 
 # Create the webdriver object using the service
 driver = webdriver.Firefox(service=service)

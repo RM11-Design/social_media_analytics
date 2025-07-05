@@ -1,5 +1,6 @@
 from playwright.sync_api import sync_playwright
 import time
+import csv
 
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
@@ -20,10 +21,14 @@ with sync_playwright() as p:
 
     comments = the_video.locator('xpath=//*[@id="content-text"]/span').all_text_contents()
 
-    for comment in enumerate(comments):
-        print(comment)
-    
 
+    with open("test.csv","w",newline="",encoding="utf-8") as f:
+        write = csv.writer(f)
+        write.writerow(["VIDEO_NUMBER","VIEWS"])
+        for x,comment in enumerate(comments):
+            write.writerow([f"Comment: {x + 1}:", comment])
+
+    
 
     # the_title = the_video.get_by_text("style-scope ytd-rich-grid-media")
     # print(the_title)
